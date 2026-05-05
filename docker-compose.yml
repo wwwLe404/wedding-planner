@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: weddingplanner-postgres
+    environment:
+      POSTGRES_DB: weddingplanner
+      POSTGRES_USER: wedding
+      POSTGRES_PASSWORD: wedding
+    ports:
+      - "5432:5432"
+    volumes:
+      - weddingplanner_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  weddingplanner_postgres_data:
