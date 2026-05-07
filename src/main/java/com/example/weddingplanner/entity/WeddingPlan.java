@@ -8,7 +8,11 @@ public class WeddingPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String coupleName;
+    private String partnerOneFirstName;
+
+    private String partnerTwoFirstName;
+
+    private String coupleNickname;
 
     private String location;
 
@@ -17,8 +21,10 @@ public class WeddingPlan {
     public WeddingPlan() {
     }
 
-    public WeddingPlan(String coupleName, String location, String weddingDate) {
-        this.coupleName = coupleName;
+    public WeddingPlan(String partnerOneFirstName, String partnerTwoFirstName, String coupleNickname, String location, String weddingDate) {
+        this.partnerOneFirstName = partnerOneFirstName;
+        this.partnerTwoFirstName = partnerTwoFirstName;
+        this.coupleNickname = coupleNickname;
         this.location = location;
         this.weddingDate = weddingDate;
     }
@@ -27,12 +33,28 @@ public class WeddingPlan {
         return id;
     }
 
+    public String getPartnerOneFirstName() {
+        return partnerOneFirstName;
+    }
+
+    public void setPartnerOneFirstName(String partnerOneFirstName) {
+        this.partnerOneFirstName = partnerOneFirstName;
+    }
+
+    public String getPartnerTwoFirstName() {
+        return partnerTwoFirstName;
+    }
+
+    public void setPartnerTwoFirstName(String partnerTwoFirstName) {
+        this.partnerTwoFirstName = partnerTwoFirstName;
+    }
+
     public String getCoupleName() {
-        return coupleName;
+        return coupleNickname;
     }
 
     public void setCoupleName(String coupleName) {
-        this.coupleName = coupleName;
+        this.coupleNickname = coupleName;
     }
 
     public String getLocation() {
