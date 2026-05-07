@@ -36,36 +36,36 @@ public class Guest {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public boolean isNeedsAccommodation() {
-        return needsAccommodation;
-    }
-
-    public boolean isAttending() {
-        return attending;
-    }
-
-    public WeddingPlan getWeddingPlan() {
-        return weddingPlan;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public boolean isNeedsAccommodation() {
+        return needsAccommodation;
+    }
+
     public void setNeedsAccommodation(boolean needsAccommodation) {
         this.needsAccommodation = needsAccommodation;
     }
 
+    public boolean isAttending() {
+        return attending;
+    }
+
     public void setAttending(boolean attending) {
         this.attending = attending;
+    }
+
+    public WeddingPlan getWeddingPlan() {
+        return weddingPlan;
     }
 
     public void setWeddingPlan(WeddingPlan weddingPlan) {
