@@ -10,6 +10,8 @@ public class Task {
 
     private String title;
 
+    private String notes;
+
     private boolean completed;
 
     @ManyToOne
@@ -19,8 +21,9 @@ public class Task {
     public Task() {
     }
 
-    public Task(String title, boolean completed, WeddingPlan weddingPlan) {
+    public Task(String title, String notes, boolean completed, WeddingPlan weddingPlan) {
         this.title = title;
+        this.notes = notes;
         this.completed = completed;
         this.weddingPlan = weddingPlan;
     }
@@ -33,6 +36,10 @@ public class Task {
         return title;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
     public boolean isCompleted() {
         return completed;
     }
@@ -43,6 +50,10 @@ public class Task {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public void setCompleted(boolean completed) {
