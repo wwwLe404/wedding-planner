@@ -36,28 +36,28 @@ public class Task {
         return title;
     }
 
-    public String getNotes() {
-        return notes;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public WeddingPlan getWeddingPlan() {
-        return weddingPlan;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 
     public void setNotes(String notes) {
         this.notes = notes;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public WeddingPlan getWeddingPlan() {
+        return weddingPlan;
     }
 
     public void setWeddingPlan(WeddingPlan weddingPlan) {
