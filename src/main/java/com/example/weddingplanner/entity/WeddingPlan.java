@@ -1,6 +1,7 @@
 package com.example.weddingplanner.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class WeddingPlan {
@@ -16,12 +17,12 @@ public class WeddingPlan {
 
     private String location;
 
-    private String weddingDate;
+    private LocalDate weddingDate;
 
     public WeddingPlan() {
     }
 
-    public WeddingPlan(String partnerOneFirstName, String partnerTwoFirstName, String coupleNickname, String location, String weddingDate) {
+    public WeddingPlan(String partnerOneFirstName, String partnerTwoFirstName, String coupleNickname, String location, LocalDate weddingDate) {
         this.partnerOneFirstName = partnerOneFirstName;
         this.partnerTwoFirstName = partnerTwoFirstName;
         this.coupleNickname = coupleNickname;
@@ -65,11 +66,11 @@ public class WeddingPlan {
         this.location = location;
     }
 
-    public String getWeddingDate() {
+    public LocalDate getWeddingDate() {
         return weddingDate;
     }
 
-    public void setWeddingDate(String weddingDate) {
+    public void setWeddingDate(LocalDate weddingDate) {
         this.weddingDate = weddingDate;
     }
 }
