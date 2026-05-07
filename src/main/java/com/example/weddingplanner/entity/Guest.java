@@ -8,8 +8,9 @@ public class Guest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
+    private String firstName;
+    private String lastName;
+    private boolean needsAccommodation;
     private boolean attending;
 
     @ManyToOne
@@ -19,8 +20,10 @@ public class Guest {
     public Guest() {
     }
 
-    public Guest(String name, boolean attending, WeddingPlan weddingPlan) {
-        this.name = name;
+    public Guest(String firstName, String lastName,boolean needsAccommodation,boolean attending ,WeddingPlan weddingPlan) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.needsAccommodation = needsAccommodation;
         this.attending = attending;
         this.weddingPlan = weddingPlan;
     }
@@ -29,8 +32,16 @@ public class Guest {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public boolean isNeedsAccommodation() {
+        return needsAccommodation;
     }
 
     public boolean isAttending() {
@@ -41,8 +52,16 @@ public class Guest {
         return weddingPlan;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setNeedsAccommodation(boolean needsAccommodation) {
+        this.needsAccommodation = needsAccommodation;
     }
 
     public void setAttending(boolean attending) {
