@@ -10,6 +10,8 @@ public class Guest {
 
     private String firstName;
     private String lastName;
+    private String relationship;
+    private String dietaryRestrictions;
     private boolean needsAccommodation;
     private boolean attending;
 
@@ -20,9 +22,18 @@ public class Guest {
     public Guest() {
     }
 
-    public Guest(String firstName, String lastName,boolean needsAccommodation,boolean attending ,WeddingPlan weddingPlan) {
+    public Guest(String firstName,
+                 String lastName,
+                 String relationship,
+                 String dietaryRestrictions,
+                 boolean needsAccommodation,
+                 boolean attending,
+                 WeddingPlan weddingPlan
+    ) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.relationship = relationship;
+        this.dietaryRestrictions = dietaryRestrictions;
         this.needsAccommodation = needsAccommodation;
         this.attending = attending;
         this.weddingPlan = weddingPlan;
@@ -46,6 +57,22 @@ public class Guest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
+    public String getDietaryRestrictions() {
+        return dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(String dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
     }
 
     public boolean isNeedsAccommodation() {
