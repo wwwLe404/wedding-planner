@@ -10,11 +10,11 @@ const empty = {
 }
 
 function GuestModal({ guest, plans, onClose, onSave }) {
-  const [form, setForm] = useState(
-    guest
-      ? { ...guest, weddingPlan: guest.weddingPlan ? { id: guest.weddingPlan.id } : null }
-      : { ...empty, weddingPlan: plans[0] ? { id: plans[0].id } : null }
-  )
+  const [form, setForm] = useState(() => {
+    if (guest) return {...guest, weddingPlan: guest.weddingPlan ? {id: guest.weddingPlan.id} : null}
+    const defaultPlan = plans.length > 0 ? {id: plans[0].id} : null
+    return {...empty, weddingPlan: defaultPlan}
+  })
 
   const handle = e => {
     const { name, value, type, checked } = e.target
@@ -160,6 +160,7 @@ export default function Guests({ onToast }) {
   const [plans, setPlans]     = useState([])
   const [modal, setModal]     = useState(null)
   const [filter, setFilter]   = useState('all')
+  const [planFilter, setPlanFilter] = useState('all')
 
   const load = () => Promise.all([guestApi.getAll(), weddingPlanApi.getAll()])
     .then(([g, p]) => { setGuests(g); setPlans(p) })
@@ -190,6 +191,9 @@ export default function Guests({ onToast }) {
     if (filter === 'pending')       return g.attendingStatus === 'PENDING'
     if (filter === 'accommodation') return g.needsAccommodation
     return true
+  }).filter(g => {
+    if (planFilter === 'all') return true
+    return g.weddingPlan?.id === Number(planFilter)
   })
 
   const attending = guests.filter(g => g.attendingStatus === 'ATTENDING').length
@@ -235,7 +239,7 @@ export default function Guests({ onToast }) {
       )}
 
       {/* Filter */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
         {[['all','Alle'],
           ['attending','Zugesagt'],
           ['not','Abgesagt'],
@@ -252,6 +256,29 @@ export default function Guests({ onToast }) {
           </button>
         ))}
       </div>
+
+      {/* Hochzeits-Filter */}
+      {plans.length > 0 && (
+          <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
+            <button
+                className={`btn ${planFilter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
+                style={{ fontSize: 13 }}
+                onClick={() => setPlanFilter('all')}
+            >
+              Alle Hochzeiten
+            </button>
+            {plans.map(p => (
+                <button
+                    key={p.id}
+                    className={`btn ${planFilter === String(p.id) ? 'btn-primary' : 'btn-secondary'}`}
+                    style={{ fontSize: 13 }}
+                    onClick={() => setPlanFilter(String(p.id))}
+                >
+                  {p.coupleName || `${p.partnerOneFirstName} & ${p.partnerTwoFirstName}`}
+                </button>
+            ))}
+          </div>
+      )}
 
       {filtered.length === 0 ? (
         <div className="empty-state card">
