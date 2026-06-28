@@ -25,7 +25,7 @@ export default function Dashboard({ onNavigate }) {
     .sort((a, b) => new Date(a.weddingDate) - new Date(b.weddingDate))[0]
 
   const doneTasks   = tasks.filter(t => t.completed).length
-  const attending   = guests.filter(g => g.attending).length
+  const attending   = guests.filter(g => g.attendingStatus === 'ATTENDING').length
 
   if (loading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 300 }}>

@@ -74,7 +74,7 @@ export default function WeddingPlanDetail({ planId, onBack, onToast }) {
     </div>
   )
 
-  const attending    = guests.filter(g => g.attending).length
+  const attending    = guests.filter(g => g.attendingStatus === 'ATTENDING').length
   const doneTasks    = tasks.filter(t => t.completed).length
   const accommodation = guests.filter(g => g.needsAccommodation).length
 
@@ -238,7 +238,7 @@ export default function WeddingPlanDetail({ planId, onBack, onToast }) {
               >
                 <div style={{
                   width: 38, height: 38, borderRadius: '50%', flexShrink: 0,
-                  background: guest.attending ? 'var(--rose-light)' : 'var(--creme-dark)',
+                  background: guest.attendingStatus === 'ATTENDING' ? 'var(--rose-light)' : 'var(--creme-dark)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontFamily: 'var(--font-display)', fontSize: 14, color: 'var(--rose-deep)', fontWeight: 500,
                 }}>
@@ -254,9 +254,15 @@ export default function WeddingPlanDetail({ planId, onBack, onToast }) {
                 </div>
                 <div style={{ display: 'flex', gap: 6, flexShrink: 0, alignItems: 'center' }}>
                   {guest.needsAccommodation && <span className="badge badge-lavender"><Bed size={10} /> Unterkunft</span>}
-                  {guest.attending
-                    ? <span className="badge badge-success"><Check size={10} /> Zugesagt</span>
-                    : <span className="badge badge-muted">Abgesagt</span>}
+                  {guest.attendingStatus === 'ATTENDING' && (
+                      <span className="badge badge-success"><Check size={10} /> Zugesagt</span>
+                  )}
+                  {guest.attendingStatus === 'NOT_ATTENDING' && (
+                      <span className="badge badge-muted">Abgesagt</span>
+                  )}
+                  {guest.attendingStatus === 'PENDING' && (
+                      <span className="badge badge-rose">Noch offen</span>
+                  )}
                   <button
                     className="btn btn-ghost"
                     style={{ padding: '5px 7px', color: '#C0392B' }}
