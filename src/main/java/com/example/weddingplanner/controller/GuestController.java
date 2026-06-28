@@ -7,6 +7,8 @@ import com.example.weddingplanner.service.WeddingPlanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -36,14 +38,14 @@ public class GuestController {
     }
 
     @PostMapping
-    public Guest createGuest(@RequestBody Guest guest) {
+    public Guest createGuest(@Valid @RequestBody Guest guest) {
         return guestService.saveGuest(guest);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Guest> updateGuest(
             @PathVariable Long id,
-            @RequestBody Guest updatedGuest
+            @Valid @RequestBody Guest updatedGuest
     ) {
         return guestService.getGuestById(id)
                 .map(existingGuest -> {
@@ -74,8 +76,7 @@ public class GuestController {
     @PostMapping("/wedding-plan/{weddingPlanId}")
     public ResponseEntity<Guest> createGuestForWeddingPlan(
             @PathVariable Long weddingPlanId,
-            @RequestBody Guest guest
-    ) {
+            @Valid @RequestBody Guest guest) {
         return weddingPlanService.getWeddingPlanById(weddingPlanId)
                 .map(weddingPlan -> {
                     guest.setWeddingPlan(weddingPlan);

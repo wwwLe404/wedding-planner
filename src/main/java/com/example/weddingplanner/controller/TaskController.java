@@ -6,6 +6,8 @@ import com.example.weddingplanner.service.WeddingPlanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -35,14 +37,14 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
+    public Task createTask(@Valid @RequestBody Task task) {
         return taskService.saveTask(task);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(
             @PathVariable Long id,
-            @RequestBody Task updatedTask
+            @Valid @RequestBody Task updatedTask
     ) {
         return taskService.getTaskById(id)
                 .map(existingTask -> {
@@ -70,7 +72,7 @@ public class TaskController {
     @PostMapping("/wedding-plan/{weddingPlanId}")
     public ResponseEntity<Task> createTaskForWeddingPlan(
             @PathVariable Long weddingPlanId,
-            @RequestBody Task task
+            @Valid @RequestBody Task task
     ) {
         return weddingPlanService.getWeddingPlanById(weddingPlanId)
                 .map(weddingPlan -> {

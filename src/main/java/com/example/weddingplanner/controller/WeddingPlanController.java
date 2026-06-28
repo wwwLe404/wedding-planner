@@ -9,6 +9,8 @@ import com.example.weddingplanner.service.WeddingPlanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -43,14 +45,14 @@ public class WeddingPlanController {
 
 
     @PostMapping
-    public WeddingPlan createWeddingPlan(@RequestBody WeddingPlan weddingPlan) {
+    public WeddingPlan createWeddingPlan(@Valid @RequestBody WeddingPlan weddingPlan) {
         return weddingPlanService.saveWeddingPlan(weddingPlan);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<WeddingPlan> updateWeddingPlan(
             @PathVariable Long id,
-            @RequestBody WeddingPlan updatedWeddingPlan
+            @Valid @RequestBody WeddingPlan updatedWeddingPlan
     ) {
         return weddingPlanService.getWeddingPlanById(id)
                 .map(existingWeddingPlan -> {
