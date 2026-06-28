@@ -1,5 +1,9 @@
 package com.example.weddingplanner.controller;
 
+import com.example.weddingplanner.entity.Guest;
+import com.example.weddingplanner.entity.Task;
+import com.example.weddingplanner.service.GuestService;
+import com.example.weddingplanner.service.TaskService;
 import com.example.weddingplanner.entity.WeddingPlan;
 import com.example.weddingplanner.service.WeddingPlanService;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +15,17 @@ import java.util.List;
 @RequestMapping("/api/wedding-plans")
 public class WeddingPlanController {
     private final WeddingPlanService weddingPlanService;
+    private final GuestService guestService;
+    private final TaskService taskService;
 
-    public WeddingPlanController(WeddingPlanService weddingPlanService) {
+    public WeddingPlanController(
+            WeddingPlanService weddingPlanService,
+            GuestService guestService,
+            TaskService taskService
+    ) {
         this.weddingPlanService = weddingPlanService;
+        this.guestService = guestService;
+        this.taskService = taskService;
     }
 
     @GetMapping
@@ -27,6 +39,8 @@ public class WeddingPlanController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+
 
     @PostMapping
     public WeddingPlan createWeddingPlan(@RequestBody WeddingPlan weddingPlan) {
@@ -60,5 +74,23 @@ public class WeddingPlanController {
 
         weddingPlanService.deleteWeddingPlan(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/guests")
+    public ResponseEntity<List<Guest>> getGuestsForWeddingPlan(@PathVariable Long id) {
+        if (weddingPlanService.getWeddingPlanById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(guestService.getGuestsByWeddingPlanId(id));
+    }
+
+    @GetMapping("/{id}/tasks")
+    public ResponseEntity<List<Task>> getTasksForWeddingPlan(@PathVariable Long id) {
+        if (weddingPlanService.getWeddingPlanById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(taskService.getTasksByWeddingPlanId(id));
     }
 }
