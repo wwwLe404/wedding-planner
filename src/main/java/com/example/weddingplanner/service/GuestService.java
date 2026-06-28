@@ -23,6 +23,10 @@ public class GuestService {
         return guestRepository.findAll();
     }
 
+    public List<Guest> getGuestsByWeddingPlanId(Long weddingPlanId) {
+        return guestRepository.findByWeddingPlanId(weddingPlanId);
+    }
+
     public Optional<Guest> getGuestById(Long id) {
         return guestRepository.findById(id);
     }
