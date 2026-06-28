@@ -2,6 +2,7 @@ package com.example.weddingplanner.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Guest {
@@ -18,7 +19,8 @@ public class Guest {
     private String relationship;
     private String dietaryRestrictions;
     private boolean needsAccommodation;
-    private boolean attending;
+    @NotNull(message = "Status darf nicht leer sein")
+    private String attendingStatus; // "ATTENDING", "NOT_ATTENDING", "PENDING"
 
     @ManyToOne
     @JoinColumn(name = "wedding_plan_id")
@@ -28,13 +30,13 @@ public class Guest {
 
     public Guest(String firstName, String lastName, String relationship,
                  String dietaryRestrictions, boolean needsAccommodation,
-                 boolean attending, WeddingPlan weddingPlan) {
+                 String attendingStatus, WeddingPlan weddingPlan) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.relationship = relationship;
         this.dietaryRestrictions = dietaryRestrictions;
         this.needsAccommodation = needsAccommodation;
-        this.attending = attending;
+        this.attendingStatus = attendingStatus;
         this.weddingPlan = weddingPlan;
     }
 
@@ -55,8 +57,8 @@ public class Guest {
     public boolean isNeedsAccommodation() { return needsAccommodation; }
     public void setNeedsAccommodation(boolean needsAccommodation) { this.needsAccommodation = needsAccommodation; }
 
-    public boolean isAttending() { return attending; }
-    public void setAttending(boolean attending) { this.attending = attending; }
+    public String getAttendingStatus() { return attendingStatus; }
+    public void setAttendingStatus(String attendingStatus) { this.attendingStatus = attendingStatus; }
 
     public WeddingPlan getWeddingPlan() { return weddingPlan; }
     public void setWeddingPlan(WeddingPlan weddingPlan) { this.weddingPlan = weddingPlan; }

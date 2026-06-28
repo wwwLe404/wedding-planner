@@ -54,7 +54,7 @@ public class GuestController {
                     existingGuest.setRelationship(updatedGuest.getRelationship());
                     existingGuest.setDietaryRestrictions(updatedGuest.getDietaryRestrictions());
                     existingGuest.setNeedsAccommodation(updatedGuest.isNeedsAccommodation());
-                    existingGuest.setAttending(updatedGuest.isAttending());
+                    existingGuest.setAttendingStatus(updatedGuest.getAttendingStatus());
                     existingGuest.setWeddingPlan(updatedGuest.getWeddingPlan());
 
                     Guest savedGuest = guestService.saveGuest(existingGuest);

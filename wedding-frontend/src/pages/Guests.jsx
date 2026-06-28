@@ -6,7 +6,7 @@ import { DIETARY_OPTIONS, ALL_RELATIONSHIP_OPTIONS } from '../components/guestOp
 
 const empty = {
   firstName: '', lastName: '', relationship: '',
-  dietaryRestrictions: '', needsAccommodation: false, attending: true, weddingPlan: null
+  dietaryRestrictions: '', needsAccommodation: false, attendingStatus: 'PENDING', weddingPlan: null
 }
 
 function GuestModal({ guest, plans, onClose, onSave }) {
@@ -110,17 +110,34 @@ function GuestModal({ guest, plans, onClose, onSave }) {
           </select>
         </div>
 
-        {/* Checkboxen */}
-        <div style={{ display: 'flex', gap: 28 }}>
-          <label className="checkbox-row">
-            <input type="checkbox" name="attending" checked={form.attending} onChange={handle} />
-            <span style={{ fontSize: 14 }}>Zugesagt</span>
-          </label>
-          <label className="checkbox-row">
-            <input type="checkbox" name="needsAccommodation" checked={form.needsAccommodation} onChange={handle} />
-            <span style={{ fontSize: 14 }}>Unterkunft nötig</span>
-          </label>
+        {/* Zusagestatus */}
+        <div className="form-group">
+          <label className="form-label">Zusagestatus</label>
+          <div style={{ display: 'flex', gap: 16, marginTop: 4 }}>
+            {[
+              ['ATTENDING', '✅ Zugesagt'],
+              ['NOT_ATTENDING', '❌ Abgesagt'],
+              ['PENDING', '⏳ Noch offen'],
+            ].map(([val, label]) => (
+                <label key={val} className="checkbox-row">
+                  <input
+                      type="radio"
+                      name="attendingStatus"
+                      value={val}
+                      checked={form.attendingStatus === val}
+                      onChange={handle}
+                  />
+                  <span style={{ fontSize: 14 }}>{label}</span>
+                </label>
+            ))}
+          </div>
         </div>
+
+        {/* Unterkunft */}
+        <label className="checkbox-row">
+          <input type="checkbox" name="needsAccommodation" checked={form.needsAccommodation} onChange={handle} />
+          <span style={{ fontSize: 14 }}>Unterkunft nötig</span>
+        </label>
 
         <div className="modal-footer">
           <button className="btn btn-ghost" onClick={onClose}>Abbrechen</button>
@@ -168,13 +185,14 @@ export default function Guests({ onToast }) {
   }
 
   const filtered = guests.filter(g => {
-    if (filter === 'attending')     return g.attending
-    if (filter === 'not')           return !g.attending
+    if (filter === 'attending')     return g.attendingStatus === 'ATTENDING'
+    if (filter === 'not')           return g.attendingStatus === 'NOT_ATTENDING'
+    if (filter === 'pending')       return g.attendingStatus === 'PENDING'
     if (filter === 'accommodation') return g.needsAccommodation
     return true
   })
 
-  const attending = guests.filter(g => g.attending).length
+  const attending = guests.filter(g => g.attendingStatus === 'ATTENDING').length
 
   // Badge-Farbe je nach Gruppe
   const dietaryBadge = (val) => {
@@ -218,7 +236,12 @@ export default function Guests({ onToast }) {
 
       {/* Filter */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
-        {[['all','Alle'],['attending','Zugesagt'],['not','Abgesagt'],['accommodation','Unterkunft']].map(([val, label]) => (
+        {[['all','Alle'],
+          ['attending','Zugesagt'],
+          ['not','Abgesagt'],
+          ['pending','Noch offen'],
+          ['accommodation','Unterkunft']
+        ].map(([val, label]) => (
           <button
             key={val}
             className={`btn ${filter === val ? 'btn-primary' : 'btn-secondary'}`}
@@ -255,7 +278,7 @@ export default function Guests({ onToast }) {
                 {/* Avatar */}
                 <div style={{
                   width: 42, height: 42, borderRadius: '50%', flexShrink: 0,
-                  background: guest.attending ? 'var(--rose-light)' : 'var(--creme-dark)',
+                  background: guest.attendingStatus === 'ATTENDING' ? 'var(--rose-light)' : 'var(--creme-dark)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontFamily: 'var(--font-display)', fontSize: 16,
                   color: 'var(--rose-deep)', fontWeight: 500,
@@ -288,9 +311,15 @@ export default function Guests({ onToast }) {
                   {guest.needsAccommodation && (
                     <span className="badge badge-lavender"><Bed size={11} /> Unterkunft</span>
                   )}
-                  {guest.attending
-                    ? <span className="badge badge-success"><Check size={11} /> Zugesagt</span>
-                    : <span className="badge badge-muted">Abgesagt</span>}
+                  {guest.attendingStatus === 'ATTENDING' && (
+                      <span className="badge badge-success"><Check size={11} /> Zugesagt</span>
+                  )}
+                  {guest.attendingStatus === 'NOT_ATTENDING' && (
+                      <span className="badge badge-muted">Abgesagt</span>
+                  )}
+                  {guest.attendingStatus === 'PENDING' && (
+                      <span className="badge badge-rose">Noch offen</span>
+                  )}
                 </div>
 
                 {/* Aktionen */}
