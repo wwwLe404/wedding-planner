@@ -32,6 +32,11 @@ build/
 ### VS Code ###
 .vscode/
 
-#Postman
+# Postman
 .postman/
 postman/
+
+# Frontend
+wedding-frontend/node_modules
+wedding-frontend/dist/
+wedding-frontend/.vite/
