@@ -69,6 +69,7 @@ export default function Tasks({ onToast }) {
   const [plans, setPlans] = useState([])
   const [modal, setModal] = useState(null)
   const [filter, setFilter] = useState('all')
+  const [planFilter, setPlanFilter] = useState('all')
 
   const load = () => Promise.all([taskApi.getAll(), weddingPlanApi.getAll()])
     .then(([t, p]) => { setTasks(t); setPlans(p) })
@@ -103,6 +104,9 @@ export default function Tasks({ onToast }) {
     if (filter === 'open') return !t.completed
     if (filter === 'done') return t.completed
     return true
+  }).filter(t => {
+    if (planFilter === 'all') return true
+    return t.weddingPlan?.id === Number(planFilter)
   })
 
   return (
@@ -136,7 +140,7 @@ export default function Tasks({ onToast }) {
       )}
 
       {/* Filter */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
         {[['all','Alle'],['open','Offen'],['done','Erledigt']].map(([val, label]) => (
           <button
             key={val}
@@ -148,6 +152,30 @@ export default function Tasks({ onToast }) {
           </button>
         ))}
       </div>
+
+      {/* Hochzeits-Filter */}
+      {plans.length > 0 && (
+          <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
+            <button
+                className={`btn ${planFilter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
+                style={{ fontSize: 13 }}
+                onClick={() => setPlanFilter('all')}
+            >
+              Alle Hochzeiten
+            </button>
+            {plans.map(p => (
+                <button
+                    key={p.id}
+                    className={`btn ${planFilter === String(p.id) ? 'btn-primary' : 'btn-secondary'}`}
+                    style={{ fontSize: 13 }}
+                    onClick={() => setPlanFilter(String(p.id))}
+                >
+                  {p.coupleName || `${p.partnerOneFirstName} & ${p.partnerTwoFirstName}`}
+                </button>
+            ))}
+          </div>
+      )}
+
 
       {filtered.length === 0 ? (
         <div className="empty-state card">
