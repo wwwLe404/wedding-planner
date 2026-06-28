@@ -84,7 +84,7 @@ class WeddingplannerApplicationTests {
 				"Sophie", "Lena", "Sophie & Lena", "München", LocalDate.of(2025, 9, 14)));
 
 		Guest guest = new Guest("Anna", "Müller", "Freundin der Braut",
-				"Vegetarisch", false, true, null);
+				"Vegetarisch", false, "ATTENDING", null);
 
 		mockMvc.perform(post("/api/guests/wedding-plan/" + plan.getId())
 						.contentType(MediaType.APPLICATION_JSON)
