@@ -2,6 +2,7 @@ package com.example.weddingplanner.controller;
 
 import com.example.weddingplanner.entity.Task;
 import com.example.weddingplanner.service.TaskService;
+import com.example.weddingplanner.service.WeddingPlanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +12,14 @@ import java.util.List;
 @RequestMapping("/api/tasks")
 public class TaskController {
     private final TaskService taskService;
+    private final WeddingPlanService weddingPlanService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(
+            TaskService taskService,
+            WeddingPlanService weddingPlanService
+    ) {
         this.taskService = taskService;
+        this.weddingPlanService = weddingPlanService;
     }
 
     @GetMapping
@@ -59,5 +65,19 @@ public class TaskController {
 
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/wedding-plan/{weddingPlanId}")
+    public ResponseEntity<Task> createTaskForWeddingPlan(
+            @PathVariable Long weddingPlanId,
+            @RequestBody Task task
+    ) {
+        return weddingPlanService.getWeddingPlanById(weddingPlanId)
+                .map(weddingPlan -> {
+                    task.setWeddingPlan(weddingPlan);
+                    Task savedTask = taskService.saveTask(task);
+                    return ResponseEntity.ok(savedTask);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

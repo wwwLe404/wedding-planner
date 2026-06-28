@@ -2,6 +2,8 @@ package com.example.weddingplanner.controller;
 
 import com.example.weddingplanner.entity.Guest;
 import com.example.weddingplanner.service.GuestService;
+import com.example.weddingplanner.entity.WeddingPlan;
+import com.example.weddingplanner.service.WeddingPlanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +13,14 @@ import java.util.List;
 @RequestMapping("/api/guests")
 public class GuestController {
     private final GuestService guestService;
+    private final WeddingPlanService weddingPlanService;
 
-    public GuestController(GuestService guestService) {
+    public GuestController(
+            GuestService guestService,
+            WeddingPlanService weddingPlanService
+    ) {
         this.guestService = guestService;
+        this.weddingPlanService = weddingPlanService;
     }
 
     @GetMapping
@@ -62,5 +69,19 @@ public class GuestController {
 
         guestService.deleteGuest(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/wedding-plan/{weddingPlanId}")
+    public ResponseEntity<Guest> createGuestForWeddingPlan(
+            @PathVariable Long weddingPlanId,
+            @RequestBody Guest guest
+    ) {
+        return weddingPlanService.getWeddingPlanById(weddingPlanId)
+                .map(weddingPlan -> {
+                    guest.setWeddingPlan(weddingPlan);
+                    Guest savedGuest = guestService.saveGuest(guest);
+                    return ResponseEntity.ok(savedGuest);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }
