@@ -211,20 +211,6 @@ export default function Weather({ onToast }) {
                   </div>
                 ))}
               </div>
-
-              {/* Empfehlung */}
-              <div style={{
-                marginTop: 16, padding: '14px 18px', borderRadius: 'var(--radius-md)',
-                background: weather.main === 'Rain' || weather.main === 'Thunderstorm'
-                  ? '#FFF8F0' : 'var(--success-bg)',
-                border: `1px solid ${weather.main === 'Rain' || weather.main === 'Thunderstorm' ? '#FFE0C0' : '#C8E6D0'}`,
-              }}>
-                <p style={{ fontSize: 13, color: weather.main === 'Rain' ? '#A06010' : '#3A7A48' }}>
-                  {weather.main === 'Rain' || weather.main === 'Thunderstorm'
-                    ? '🌂 Regen erwartet — plant lieber einen Ausweich-Innenraum ein.'
-                    : '✅ Das Wetter sieht gut aus — einem Außenbereich steht nichts im Wege!'}
-                </p>
-              </div>
             </div>
           )}
         </>
